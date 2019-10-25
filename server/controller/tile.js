@@ -1,39 +1,39 @@
 import model from "../models";
 
-const { Board } = model;
+const { Tile } = model;
 
-class Boards {
+class Tiles {
   static create(req, res) {
     const { name } = req.body;
     const { userId } = req.params;
-    return Board.create({
+    return Tile.create({
       name,
       userId
-    }).then(board =>
+    }).then(tile =>
       res.status(201).send({
-        message: `Your board with the name ${name} has been created successfully `,
-        board
+        message: `Your tile with the name ${name} has been created successfully `,
+        tile
       })
     );
   }
   static list(req, res) {
-    return Board.findAll().then(boards => res.status(200).send(boards));
+    return Tile.findAll().then(tiles => res.status(200).send(tiles));
   }
 
   static modify(req, res) {
     const { name } = req.body;
-    return Board.findById(req.params.boardId)
-      .then(board => {
-        board
+    return Tile.findById(req.params.tileId)
+      .then(tile => {
+        tile
           .update({
-            name: name || board.name,
-            likes: likes || board.likes
+            name: name || tile.name,
+            likes: likes || tile.likes
           })
-          .then(updatedBoard => {
+          .then(updatedTile => {
             res.status(200).send({
-              message: "Board updated successfully",
+              message: "Tile updated successfully",
               data: {
-                name: name || updatedBoard.name
+                name: name || updatedTile.name
               }
             });
           })
@@ -42,18 +42,18 @@ class Boards {
       .catch(error => res.status(400).send(error));
   }
   static delete(req, res) {
-    return Board.findById(req.params.boardId)
-      .then(board => {
-        if (!board) {
+    return Tile.findById(req.params.tileId)
+      .then(tile => {
+        if (!tile) {
           return res.status(400).send({
-            message: "Board Not Found"
+            message: "Tile Not Found"
           });
         }
-        return board
+        return tile
           .destroy()
           .then(() =>
             res.status(200).send({
-              message: "Board successfully deleted"
+              message: "Tile successfully deleted"
             })
           )
           .catch(error => res.status(400).send(error));
@@ -62,4 +62,4 @@ class Boards {
   }
 }
 
-export default Boards;
+export default Tiles;

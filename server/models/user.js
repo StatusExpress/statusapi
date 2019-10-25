@@ -52,7 +52,8 @@ export default (sequelize, DataTypes) => {
   );
   User.associate = models => {
     // associations can be defined here
-    User.hasMany(models.Board, {
+    User.hasMany(models.Tile, {
+      through: "Boards",
       foreignKey: "userId"
     });
   };

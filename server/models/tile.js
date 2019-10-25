@@ -1,24 +1,27 @@
 export default (sequelize, DataTypes) => {
-  const Board = sequelize.define(
-    "Board",
+  const Tile = sequelize.define(
+    "Tile",
     {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
       },
-      name: {
+      status_code: {
         type: DataTypes.STRING,
         allowNull: {
           args: false,
           msg: "Please enter the title for your board"
-        },
-        unique: {
-          args: true,
-          msg: "Oops, looks like that board name is taken!"
         }
       },
-      author: {
+      status_description: {
+        type: DataTypes.STRING,
+        allowNull: {
+          args: false,
+          msg: "Please enter an author"
+        }
+      },
+      img_url: {
         type: DataTypes.STRING,
         allowNull: {
           args: false,
@@ -35,28 +38,23 @@ export default (sequelize, DataTypes) => {
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         allowNull: false
       },
-      likes: {
+      boardId: {
         type: DataTypes.INTEGER,
         references: {
-          key: "likes"
-        }
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "User",
+          model: "Board",
           key: "id",
-          as: "userId"
+          as: "boardId"
         }
       }
     },
     {}
   );
-  Board.associate = models => {
+  Tile.associate = models => {
     // associations can be defined here
-    Board.hasMany(models.Tile, {
-      foreignKey: "boardId"
+    Tile.belongsTo(models.Board, {
+      foreignKey: "tileId",
+      onDelete: "CASCADE"
     });
   };
-  return Board;
+  return Tile;
 };
