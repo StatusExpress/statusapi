@@ -1,40 +1,33 @@
-// import Users from '../controllers/user';
-// import Books from '../controllers/book';
+import Users from '../controllers/user';
 
-import Boards from '../controllers/boards'
+import Boards from "../controllers/boards";
 
-export default (app) => {
+export default app => {
+  app.get("/api", (req, res) =>
+    res.status(200).send({
+      message: "Welcome to the Status API!"
+    })
+  );
 
-app.get('/api', (req, res) => res.status(200).send({
-    message: 'Welcome to the Status API!',
-}));
+  // User Routes
+  app.post("/api/users", Users.signUp); // API route for user to signup
+  app.post("/api/users/:userId/boards", Boards.create); // API route for user to create a board
+  app.get("/api/boards", Boards.list); // API route for user to get all boards in the database
+  app.put("/api/boards/:boardId", Boards.modify); // API route for user to edit a board
+  app.delete("/api/boards/:boardId", Boards.delete); // API route for user to delete a board
 
-app.post('/api/users', Users.signUp); // API route for user to signup
-app.post('/api/users/:userId/books', Books.create); // API route for user to create a book
-app.get('/api/books', Books.list); // API route for user to get all books in the database
-app.put('/api/books/:bookId', Books.modify); // API route for user to edit a book
-app.delete('/api/books/:bookId', Books.delete); // API route for user to delete a book
+//   // Create a new Note
+//   app.post("/notes", notes.create);
 
-const notes = require('../controllers/note.controller.js');
+//   // Retrieve all Notes
+//   app.get("/notes", notes.findAll);
 
-// Create a new Note
-app.post('/notes', notes.create);
+//   // Retrieve a single Note with noteId
+//   app.get("/notes/:noteId", notes.findOne);
 
-// Retrieve all Notes
-app.get('/notes', notes.findAll);
+//   // Update a Note with noteId
+//   app.put("/notes/:noteId", notes.update);
 
-// Retrieve a single Note with noteId
-app.get('/notes/:noteId', notes.findOne);
-
-// Update a Note with noteId
-app.put('/notes/:noteId', notes.update);
-
-// Delete a Note with noteId
-app.delete('/notes/:noteId', notes.delete);
-}
-    
-get 'users/index'
-resources :users
-resources :boards
-resources :tiles
-};
+//   // Delete a Note with noteId
+//   app.delete("/notes/:noteId", notes.delete);
+// };
